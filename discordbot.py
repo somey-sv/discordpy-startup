@@ -1,11 +1,6 @@
 from discord.ext import commands
 import os
 import traceback
-
-bot = commands.Bot(command_prefix='/')
-token = os.environ['DISCORD_BOT_TOKEN']
-
-# インストールした discord.py を読み込む
 import discord
 import re
 import requests
@@ -15,6 +10,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import json
 import numpy as np
+
+token = os.environ['DISCORD_BOT_TOKEN']
 
 #どばすぽのヘッダー
 dbsp_header = "https://shadowverse-portal.com/deck/"
@@ -56,8 +53,10 @@ def deck_analysis(sv_class):
 
 E = R = W = D = Nc = V = B = Nm = 0
 
+client = discord.Client()
+
 # メッセージ受信時に動作する処理
-@bot.command()
+@client.event
 async def on_message(message):
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
@@ -126,5 +125,5 @@ async def on_message(message):
 
     elif message.content == 'イマイ':
         await message.channel.send('Hi.')
-
-bot.run(token)
+        
+client.run(token)
