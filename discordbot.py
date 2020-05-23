@@ -1,21 +1,21 @@
 from discord.ext import commands
 import os
 import traceback
-import discord
-import re
-import requests
-import bs4
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import json
-import numpy as np
 
 bot = commands.Bot(command_prefix='/')
 token = os.environ['DISCORD_BOT_TOKEN']
 
+
 @bot.event
-async def on_message(message):
-    await message.channel.send('Hi.')
+async def on_command_error(ctx, error):
+    orig_error = getattr(error, "original", error)
+    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
+    await ctx.send(error_msg)
+
+
+@bot.command()
+async def ping(ctx):
+    await ctx.send('pong')
+
 
 bot.run(token)
