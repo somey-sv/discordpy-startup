@@ -135,7 +135,7 @@ async def on_message(message):
 
     elif message.content == 'イマイ':
         await message.channel.send('Hi.')
-
+print("test")
 
 # Botの起動とDiscordサーバーへの接続
 client.run(token)
