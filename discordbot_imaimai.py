@@ -10,7 +10,7 @@ import json
 import numpy as np
 import os
 
-#どばすぽのヘッダー
+#どばすぽのヘッダー部分
 dbsp_header = "https://shadowverse-portal.com/deck/"
 
 #どばすぽからデッキを取得
