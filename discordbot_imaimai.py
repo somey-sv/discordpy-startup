@@ -8,6 +8,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import json
 import numpy as np
+import os
 
 #どばすぽのヘッダー
 dbsp_header = "https://shadowverse-portal.com/deck/"
@@ -48,10 +49,7 @@ def deck_analysis(sv_class):
         print("入力エラー")
 
 E = R = W = D = Nc = V = B = Nm = 0
-
-
-# 自分のBotのアクセストークンに置き換えてください
-TOKEN = 'NzEzNjc3MjM3MjAyOTc2Nzc5.Xslt0w.HFTGvM0BZ-4t_UrtxcxH6OSR7Z0'
+TOKEN = os.environ['DISCORD_BOT_TOKEN']
 
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
