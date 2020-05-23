@@ -16,14 +16,6 @@ token = os.environ['DISCORD_BOT_TOKEN']
 
 @bot.event
 async def on_message(message):
-    # メッセージ送信者がBotだった場合は無視する
-    if message.author.bot:
-        return
+    wait message.channel.send('Hi.')
 
-    elif message.content == 'イマイ':
-        await message.channel.send('Hi.')
-        
-    else:
-        return
-        
 bot.run(token)
