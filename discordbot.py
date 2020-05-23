@@ -16,6 +16,6 @@ token = os.environ['DISCORD_BOT_TOKEN']
 
 @bot.event
 async def on_message(message):
-    wait message.channel.send('Hi.')
+    await message.channel.send('Hi.')
 
 bot.run(token)
