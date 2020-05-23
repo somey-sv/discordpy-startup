@@ -51,7 +51,7 @@ E = R = W = D = Nc = V = B = Nm = 0
 
 
 # 自分のBotのアクセストークンに置き換えてください
-TOKEN = 'NzEzNjc3MjM3MjAyOTc2Nzc5.XsjmSA.NfgOMV55PFWZytq9lh7iqBaSPzM'
+TOKEN = 'NzEzNjc3MjM3MjAyOTc2Nzc5.Xslt0w.HFTGvM0BZ-4t_UrtxcxH6OSR7Z0'
 
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
