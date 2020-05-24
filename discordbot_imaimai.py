@@ -27,7 +27,7 @@ def get_deck(url):
 E = R = W = D = Nc = V = B = Nm = 0
 E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = V1 = V2 = B1 = Nm1 = Nm2 = 0
 OE = OR = OW = OD = ONc = OV = OB = ONm = 0
-arche_list = ["Control_E", "MN_E", "Other_E", "Evolve_R", "MN_R", "Other_R", "N_W", "Spell_W", "Other_W", "MN_D", "Evolve_D", "Other_D", "Nc", "Other_Nc", "MN_V", "Midrange_V", "Other_V", "MN_B","Other_B", "AF_Nm", "MN_Nm", "Other_Nm"]
+arche_list = ["Control_E", "M-N_E", "Other_E", "Evolve_R", "M-N_R", "Other_R", "N_W", "Spell_W", "Other_W", "M-N_D", "Evolve_D", "Other_D", "Nc", "Other_Nc", "M-N_V", "Midrange_V", "Other_V", "M-N_B","Other_B", "AF_Nm", "M-N_Nm", "Other_Nm"]
 
 def deck_arche_analysis(sv_deck, sv_class):
     global E,R,W,D,Nc,V,B,Nm
