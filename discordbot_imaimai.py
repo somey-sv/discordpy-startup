@@ -72,7 +72,7 @@ def deck_arche_analysis(sv_deck, sv_class):
         V += 1
         if sv_deck.count("6wgKy") == 3:
             V1 += 1
-        elif sv_deck.count("6v3oc") == 3 and sv_deck.count("6yypo") == 3:
+        elif sv_deck.count("6v3oc") ==3 and sv_deck.count("6yypo") > 1:
             V2 += 1
         else:
             OV += 1
