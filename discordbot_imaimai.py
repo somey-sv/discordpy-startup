@@ -165,15 +165,26 @@ async def on_message(message):
         fig1 = plt.figure()
         plt.pie(classes_list, labels=classes_label, colors=colors_class, autopct="%.1f%%",pctdistance=1.35,wedgeprops={'linewidth': 2, 'edgecolor':"white"})
         fig1.savefig("class_pie_"+compe_num+".png")
+        
+        if "クラスのみ" in message.content:
+            fig2 = plt.figure()
+            x = np.array(list(range(len(classes_list))))
+            plt.bar(x, classes_list, tick_label=classes_label, color=colors_class)
+            plt.ylabel("number of users")
+            plt.xticks(rotation=90)
+            plt.subplots_adjust(left=0.1, right=0.95, bottom=0.2, top=0.95)
+            for x, y in zip(x, classes_list):
+                plt.text(x, y, y, ha='center', va='bottom')
 
-        fig2 = plt.figure()
-        x = np.array(list(range(len(arche_list))))
-        plt.bar(x, arche_count, tick_label=arche_list, color=colors_arche)
-        plt.ylabel("number of users")
-        plt.xticks(rotation=90)
-        plt.subplots_adjust(left=0.1, right=0.95, bottom=0.2, top=0.95)
-        for x, y in zip(x, arche_count):
-            plt.text(x, y, y, ha='center', va='bottom')
+        else:
+            fig2 = plt.figure()
+            x = np.array(list(range(len(arche_list))))
+            plt.bar(x, arche_count, tick_label=arche_list, color=colors_arche)
+            plt.ylabel("number of users")
+            plt.xticks(rotation=90)
+            plt.subplots_adjust(left=0.1, right=0.95, bottom=0.2, top=0.95)
+            for x, y in zip(x, arche_count):
+                plt.text(x, y, y, ha='center', va='bottom')
             
         fig2.savefig("class_bar_"+compe_num+".png")
 
