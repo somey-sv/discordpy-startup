@@ -172,7 +172,7 @@ async def on_message(message):
             plt.bar(x, classes_list, tick_label=classes_label, color=colors_class)
             plt.ylabel("number of users")
             plt.xticks(rotation=90)
-            plt.subplots_adjust(left=0.1, right=0.95, bottom=0.2, top=0.95)
+            plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
             for x, y in zip(x, classes_list):
                 plt.text(x, y, y, ha='center', va='bottom')
 
