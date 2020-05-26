@@ -25,13 +25,14 @@ def get_deck(url):
     return deck, person
 
 E = R = W = D = Nc = V = B = Nm = 0
-E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = V1 = V2 = B1 = Nm1 = Nm2 = 0
+E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = Nc3 = V1 = V2 = B1 = Nm1 = Nm2 = 0
 OE = OR = OW = OD = ONc = OV = OB = ONm = 0
-arche_list = ["Control_E", "M-N_E", "Other_E", "Evolve_R", "M-N_R", "Other_R", "N_W", "Spell_W", "Other_W", "M-N_D", "Evolve_D", "Other_D", "Nc", "Other_Nc", "M-N_V", "Midrange_V", "Other_V", "M-N_B","Other_B", "AF_Nm", "M-N_Nm", "Other_Nm"]
+arche_dict = {"Control_E":E1, "M-N_E":E2, "Other_E":OE, "Evolve_R":R1, "M-N_R":R2, "Other_R":OR, "Natura_W":W1, "Spell_W":W2, "Other_W":OW, "M-N_D":D1, "Evolve_D":D2, "Other_D":OD, "M-N_Nc":Nc1, "Machina_Nc":Nc2, "Natura_Nc":Nc3,  "Other_Nc":ONc, "M-N_V":V1, "Midrange_V":V2, "Other_V":OV, "M-N_B":B1,"Other_B":OB, "AF_Nm":Nm1, "M-N_Nm":Nm2, "Other_Nm":ONm}
+arche_label = list(arche_dict.keys())
 
 def deck_arche_analysis(sv_deck, sv_class):
     global E,R,W,D,Nc,V,B,Nm
-    global E1,E2,R1,R2,W1,W2,D1,D2,Nc1,V1,V2,B1,Nm1,Nm2
+    global E1,E2,R1,R2,W1,W2,D1,D2,Nc1,Nc2,Nc3,V1,V2,B1,Nm1,Nm2
     global OE,OR,OW,OD,ONc,OV,OB,ONm
     if sv_class == 1:
         E += 1
@@ -67,7 +68,14 @@ def deck_arche_analysis(sv_deck, sv_class):
             OD += 1
     elif sv_class == 5:
         Nc += 1
-        Nc1 += 1
+        if sv_deck.count("6wgKy") == 3:
+            Nc1 += 1
+        elif sv_deck.count("6jJrc") > 1:
+            Nc2 += 1
+        elif sv_deck.count("6qy7I") == 3:
+            Nc3 += 1
+        else:
+            ONc += 1
     elif sv_class == 6:
         V += 1
         if sv_deck.count("6wgKy") == 3:
@@ -116,7 +124,7 @@ async def on_message(message):
 
         #クラスカウンターの初期化
         global E,R,W,D,Nc,V,B,Nm
-        global E1,E2,R1,R2,W1,W2,D1,D2,Nc1,V1,V2,B1,Nm1,Nm2
+        global E1,E2,R1,R2,W1,W2,D1,D2,Nc1,Nc2,Nc3,V1,V2,B1,Nm1,Nm2
         global OE,OR,OW,OD,ONc,OV,OB,ONm
         E = R = W = D = Nc = V = B = Nm = 0
         E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = V1 = V2 = B1 = Nm1 = Nm2 = 0
@@ -158,9 +166,10 @@ async def on_message(message):
 
         classes_list = np.array([E, R, W, D, Nc, V, B, Nm])
         classes_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
-        arche_count = np.array([E1,E2,OE,R1,R2,OR,W1,W2,OW,D1,D2,OD,Nc1,ONc,V1,V2,OV,B1,OB,Nm1,Nm2,ONm])
+        arche_dict = {"Control_E":E1, "M-N_E":E2, "Other_E":OE, "Evolve_R":R1, "M-N_R":R2, "Other_R":OR, "Natura_W":W1, "Spell_W":W2, "Other_W":OW, "M-N_D":D1, "Evolve_D":D2, "Other_D":OD, "M-N_Nc":Nc1, "Machina_Nc":Nc2, "Natura_Nc":Nc3,  "Other_Nc":ONc, "M-N_V":V1, "Midrange_V":V2, "Other_V":OV, "M-N_B":B1,"Other_B":OB, "AF_Nm":Nm1, "M-N_Nm":Nm2, "Other_Nm":ONm}
+        arche_count = np.array(list(arche_dict.values()))
         colors_class = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
-        colors_arche = ["palegreen"]*3 +["peachpuff"]*3 +  ["mediumslateblue"] * 3 + ["sienna"] * 3 + ["darkmagenta"] * 2 + ["crimson"] * 3 + ["wheat"] * 2 + ["lightsteelblue"] * 3
+        colors_arche = ["palegreen"]*3 +["peachpuff"]*3 +  ["mediumslateblue"] * 3 + ["sienna"] * 3 + ["darkmagenta"] * 4 + ["crimson"] * 3 + ["wheat"] * 2 + ["lightsteelblue"] * 3
 
         fig1 = plt.figure()
         plt.pie(classes_list, labels=classes_label, colors=colors_class, autopct="%.1f%%",pctdistance=1.35,wedgeprops={'linewidth': 2, 'edgecolor':"white"})
@@ -178,8 +187,8 @@ async def on_message(message):
 
         else:
             fig2 = plt.figure()
-            x = np.array(list(range(len(arche_list))))
-            plt.bar(x, arche_count, tick_label=arche_list, color=colors_arche)
+            x = np.array(list(range(len(arche_label))))
+            plt.bar(x, arche_count, tick_label=arche_label, color=colors_arche)
             plt.ylabel("number of users")
             plt.xticks(rotation=90)
             plt.subplots_adjust(left=0.1, right=0.95, bottom=0.2, top=0.95)
