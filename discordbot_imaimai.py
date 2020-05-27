@@ -229,7 +229,11 @@ async def on_message(message):
             fig, ax = plt.subplots(figsize=(12,12))
             ax.axis("off")
             ax.axis("tight")
-            ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,loc='center',bbox=[0,0,1,1], cellLoc="center")
+            tb = ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,loc='center',bbox=[0,0,1,1], cellLoc="center")
+            for i in range(len(df_arche_summary.columns)):
+                tb[0,i].set_text_props(font_properties=fontprop)
+            for k in range(1,len(df_arche_summary.index)+1):
+                tb[k,-1].set_text_props(font_properties=fontprop)
             plt.savefig("list_" + archetype_name + "_" + compe_num + ".png")
             
             await message.channel.send(compe_info)
