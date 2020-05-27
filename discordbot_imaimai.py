@@ -228,10 +228,9 @@ async def on_message(message):
             ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,loc='center',bbox=[0,0,1,1], cellLoc="center")
             plt.savefig("list_" + archetype_name + "_" + compe_num + ".png")
             
-            analysed_data = [discord.File("list_" + archetype + "_" + compe_num + ".png"),]
             await message.channel.send(compe_info)
             await message.channel.send(archetype_name)
-            await message.channel.send(files=analysed_data)
+            await message.channel.send(file=discord.File("list_" + archetype_name + "_" + compe_num + ".png"))
         
         else:
             fig1 = plt.figure()
