@@ -1,4 +1,5 @@
 # インストールした discord.py を読み込む
+
 import discord
 import re
 import requests
