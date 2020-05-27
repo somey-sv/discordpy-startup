@@ -223,7 +223,7 @@ async def on_message(message):
         if archetype_name in message.content and is_final == "決勝トーナメント":
             df_arche_summary = pd.DataFrame(arche_summary)
             df_arche_summary = df_arche_summary.fillna(0).astype("int")
-            fig, ax = plt.subplots(figsize=(8,12))
+            fig, ax = plt.subplots(figsize=(12,12))
             ax.axis("off")
             ax.axis("tight")
             ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,loc='center',bbox=[0,0,1,1], cellLoc="center")
