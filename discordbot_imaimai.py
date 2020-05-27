@@ -157,7 +157,7 @@ async def on_message(message):
         global E1,E2,R1,R2,W1,W2,D1,D2,Nc1,Nc2,Nc3,V1,V2,B1,Nm1,Nm2
         global OE,OR,OW,OD,ONc,OV,OB,ONm
         E = R = W = D = Nc = V = B = Nm = 0
-        E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = V1 = V2 = B1 = Nm1 = Nm2 = 0
+        E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = Nc3 = V1 = V2 = B1 = Nm1 = Nm2 = 0
         OE = OR = OW = OD = ONc = OV = OB = ONm = 0
 
         #大会番号を取得
