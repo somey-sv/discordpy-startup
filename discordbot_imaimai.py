@@ -192,7 +192,7 @@ async def on_message(message):
                     class_ij = j_txt["participants"][i]["dk"][j]["cl"]
                     deck_ij = j_txt["participants"][i]["dk"][j]["hs"]
                     archetype = deck_arche_analysis(deck_ij, class_ij)
-                    if archetype in message:
+                    if archetype in message.content:
                         dbsp_url = dbsp_header+deck_ij
                         deck_dict = get_deck(dbsp_url)
                         arche_summary[j_txt["participants"][i]] = deck_dict
@@ -218,7 +218,7 @@ async def on_message(message):
         class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
         arche_colors = ["palegreen"]*len(arche_dict["E"]) +["peachpuff"]*len(arche_dict["R"]) +  ["mediumslateblue"] * len(arche_dict["W"]) + ["sienna"] * len(arche_dict["D"]) + ["darkmagenta"] * len(arche_dict["Nc"]) + ["crimson"] * len(arche_dict["V"]) + ["wheat"] * len(arche_dict["B"]) + ["lightsteelblue"] * len(arche_dict["Nm"])
 
-        if archetype in message and is_final == "決勝トーナメント":
+        if archetype in message.content and is_final == "決勝トーナメント":
             df_arche_summary = pd.DataFrame(arche_summary)
             fig, ax = plt.subplots(figsize=(8,12))
             ax.axis("off")
