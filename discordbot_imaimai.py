@@ -33,7 +33,6 @@ OE = OR = OW = OD = ONc = OV = OB = ONm = 0
 arche_dict = {"E":{"Control_E":E1, "M-N_E":E2, "Other_E":OE},"R": {"Evolve_R":R1, "M-N_R":R2, "Other_R":OR},"W": {"Natura_W":W1, "Spell_W":W2, "Other_W":OW},"D": {"M-N_D":D1, "Evolve_D":D2, "Other_D":OD},"Nc": {"M-N_Nc":Nc1, "Machina_Nc":Nc2, "Natura_Nc":Nc3,  "Other_Nc":ONc},"V": {"M-N_V":V1, "Midrange_V":V2, "Other_V":OV},"B": {"M-N_B":B1,"Other_B":OB},"Nm": {"AF_Nm":Nm1, "M-N_Nm":Nm2, "Other_Nm":ONm}}
 label = [list(arche_dict[key].keys()) for key in arche_dict]
 arche_label = sum(label,[])
-arche_summary = {}
 
 #クラス、デッキタイプ分析
 def deck_arche_analysis(sv_deck, sv_class):
@@ -159,6 +158,7 @@ async def on_message(message):
         E = R = W = D = Nc = V = B = Nm = 0
         E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = Nc3 = V1 = V2 = B1 = Nm1 = Nm2 = 0
         OE = OR = OW = OD = ONc = OV = OB = ONm = 0
+        arche_summary = {}
 
         #大会番号を取得
         compe = re.compile(r"\d\d\d\d")
@@ -192,7 +192,7 @@ async def on_message(message):
                     class_ij = j_txt["participants"][i]["dk"][j]["cl"]
                     deck_ij = j_txt["participants"][i]["dk"][j]["hs"]
                     archetype = deck_arche_analysis(deck_ij, class_ij)
-                    if archetype in message.content:
+                    if archetype == message.content:
                         dbsp_url = dbsp_header+deck_ij
                         deck_dict = get_deck(dbsp_url)
                         arche_summary[j_txt["participants"][i]] = deck_dict
