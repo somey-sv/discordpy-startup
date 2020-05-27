@@ -11,6 +11,9 @@ import json
 import numpy as np
 import os
 import pandas as pd
+from matplotlib.font_manager import FontProperties
+
+fontprop = FontProperties(fname="ipaexg.ttf")
 
 #どばすぽのヘッダー部分
 dbsp_header = "https://shadowverse-portal.com/deck/"
