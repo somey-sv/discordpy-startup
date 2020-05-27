@@ -11,7 +11,7 @@ import numpy as np
 import os
 import pandas as pd
 
-plt.rcParams["font.family"] = "IPAexGothic"
+#plt.rcParams["font.family"] = "IPAexGothic"
 
 #どばすぽのヘッダー部分
 dbsp_header = "https://shadowverse-portal.com/deck/"
