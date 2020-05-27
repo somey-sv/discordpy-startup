@@ -222,6 +222,7 @@ async def on_message(message):
 
         if archetype_name in message.content and is_final == "決勝トーナメント":
             df_arche_summary = pd.DataFrame(arche_summary)
+            df_arche_summary = df_arche_summary.fillna(0).astype("int")
             fig, ax = plt.subplots(figsize=(8,12))
             ax.axis("off")
             ax.axis("tight")
@@ -230,8 +231,7 @@ async def on_message(message):
             
             await message.channel.send(compe_info)
             await message.channel.send(archetype_name)
-            #await message.channel.send(file=discord.File("list_" + archetype_name + "_" + compe_num + ".png"))
-            await message.channel.send(df_arche_summary)
+            await message.channel.send(file=discord.File("list_" + archetype_name + "_" + compe_num + ".png"))
         
         else:
             fig1 = plt.figure()
