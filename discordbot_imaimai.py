@@ -230,7 +230,8 @@ async def on_message(message):
             
             await message.channel.send(compe_info)
             await message.channel.send(archetype_name)
-            await message.channel.send(file=discord.File("list_" + archetype_name + "_" + compe_num + ".png"))
+            #await message.channel.send(file=discord.File("list_" + archetype_name + "_" + compe_num + ".png"))
+            await message.channel.send(df_arche_summary)
         
         else:
             fig1 = plt.figure()
