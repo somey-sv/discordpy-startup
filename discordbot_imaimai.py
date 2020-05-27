@@ -196,7 +196,7 @@ async def on_message(message):
                     if archetype in message.content:
                         dbsp_url = dbsp_header+deck_ij
                         deck_dict = get_deck(dbsp_url)
-                        arche_summary[j_txt["participants"][i]] = deck_dict
+                        arche_summary[j_txt["participants"][i]["nm"]] = deck_dict
                         archetype_name = archetype
                     else:
                         continue
