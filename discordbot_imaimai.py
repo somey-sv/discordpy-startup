@@ -159,6 +159,7 @@ async def on_message(message):
         E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = Nc3 = V1 = V2 = B1 = Nm1 = Nm2 = 0
         OE = OR = OW = OD = ONc = OV = OB = ONm = 0
         arche_summary = {}
+        archetype_name = "initialize"
 
         #大会番号を取得
         compe = re.compile(r"\d\d\d\d")
@@ -192,10 +193,11 @@ async def on_message(message):
                     class_ij = j_txt["participants"][i]["dk"][j]["cl"]
                     deck_ij = j_txt["participants"][i]["dk"][j]["hs"]
                     archetype = deck_arche_analysis(deck_ij, class_ij)
-                    if archetype == message.content:
+                    if archetype in message.content:
                         dbsp_url = dbsp_header+deck_ij
                         deck_dict = get_deck(dbsp_url)
                         arche_summary[j_txt["participants"][i]] = deck_dict
+                        archetype_name = archetype
                     else:
                         continue
             else:
@@ -218,17 +220,17 @@ async def on_message(message):
         class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
         arche_colors = ["palegreen"]*len(arche_dict["E"]) +["peachpuff"]*len(arche_dict["R"]) +  ["mediumslateblue"] * len(arche_dict["W"]) + ["sienna"] * len(arche_dict["D"]) + ["darkmagenta"] * len(arche_dict["Nc"]) + ["crimson"] * len(arche_dict["V"]) + ["wheat"] * len(arche_dict["B"]) + ["lightsteelblue"] * len(arche_dict["Nm"])
 
-        if archetype in message.content and is_final == "決勝トーナメント":
+        if archetype_name in message.content and is_final == "決勝トーナメント":
             df_arche_summary = pd.DataFrame(arche_summary)
             fig, ax = plt.subplots(figsize=(8,12))
             ax.axis("off")
             ax.axis("tight")
             ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,loc='center',bbox=[0,0,1,1], cellLoc="center")
-            plt.savefig("list_" + archetype + "_" + compe_num + ".png")
+            plt.savefig("list_" + archetype_name + "_" + compe_num + ".png")
             
             analysed_data = [discord.File("list_" + archetype + "_" + compe_num + ".png"),]
             await message.channel.send(compe_info)
-            await message.channel.send(archetype)
+            await message.channel.send(archetype_name)
             await message.channel.send(files=analysed_data)
         
         else:
