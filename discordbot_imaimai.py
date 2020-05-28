@@ -233,10 +233,10 @@ async def on_message(message):
             tb.set_fontsize(8)
             for i in range(len(df_arche_summary.columns)):
                 tb[0,i].set_text_props(font_properties=fontprop, weight='bold', color="w")
-                tb[0,i].set_facecolor('#2b333b')
+                tb[0,i].set_facecolor('#404040')
             for k in range(1,len(df_arche_summary.index)+1):
                 tb[k,-1].set_text_props(font_properties=fontprop, weight='bold', color="w")
-                tb[k,-1].set_facecolor('#2b333b')
+                tb[k,-1].set_facecolor('#404040')
             plt.savefig("list_" + archetype_name + "_" + compe_num + ".png",bbox_inches="tight")
             
             await message.channel.send(compe_info)
