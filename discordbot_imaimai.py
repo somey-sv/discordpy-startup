@@ -251,19 +251,19 @@ async def on_message(message):
             if "クラスのみ" in message.content:
                 fig2 = plt.figure()
                 x = np.array(list(range(len(class_label))))
-                plt.bar(x, class_count, tick_label=class_label, color=class_colors)
-                plt.ylabel("使用数")
-                plt.xticks(rotation=90)
+                plt.bar(x, class_count, color=class_colors)
+                plt.ylabel("使用数",font_properties=fontprop)
+                plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
                 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
                 for x, y in zip(x, class_count):
                     plt.text(x, y, y, ha='center', va='bottom')
             else:
                 fig2 = plt.figure()
                 x = np.array(list(range(len(arche_label))))
-                plt.bar(x, arche_count, tick_label=arche_label, color=arche_colors)
-                plt.ylabel("使用数")
-                plt.xticks(rotation=90)
-                plt.subplots_adjust(left=0.1, right=0.95, bottom=0.2, top=0.95)
+                plt.bar(x, arche_count, color=arche_colors)
+                plt.ylabel("使用数",font_properties=fontprop)
+                plt.xticks(x,arche_label,rotation=90,font_properties=fontprop)
+                plt.subplots_adjust(left=0.1, right=0.95, bottom=0.25, top=0.95)
                 for x, y in zip(x, arche_count):
                     plt.text(x, y, y, ha='center', va='bottom')
                     
