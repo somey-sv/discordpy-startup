@@ -1,5 +1,4 @@
 # インストールした discord.py を読み込む
-
 import discord
 import re
 import requests
@@ -33,7 +32,7 @@ E = R = W = D = Nc = V = B = Nm = 0
 E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = Nc3 = V1 = V2 = B1 = Nm1 = Nm2 = 0
 OE = OR = OW = OD = ONc = OV = OB = ONm = 0
 #クラス、アーキタイプ、カウントの一覧作成
-arche_dict = {"E":{"Control_E":E1, "M-N_E":E2, "Other_E":OE},"R": {"Evolve_R":R1, "M-N_R":R2, "Other_R":OR},"W": {"Natura_W":W1, "Spell_W":W2, "Other_W":OW},"D": {"M-N_D":D1, "Evolve_D":D2, "Other_D":OD},"Nc": {"M-N_Nc":Nc1, "Machina_Nc":Nc2, "Natura_Nc":Nc3,  "Other_Nc":ONc},"V": {"M-N_V":V1, "Midrange_V":V2, "Other_V":OV},"B": {"M-N_B":B1,"Other_B":OB},"Nm": {"AF_Nm":Nm1, "M-N_Nm":Nm2, "Other_Nm":ONm}}
+arche_dict = {"E":{"コントロールE":E1, "機械自然E":E2, "その他E":OE},"R": {"進化R":R1, "機械自然R":R2, "その他R":OR},"W": {"自然W":W1, "スペルW":W2, "その他W":OW},"D": {"機械自然D":D1, "進化D":D2, "その他D":OD},"Nc": {"機械自然Nc":Nc1, "機械Nc":Nc2, "自然Nc":Nc3,  "その他Nc":ONc},"V": {"機械自然V":V1, "ミッドレンジV":V2, "その他V":OV},"B": {"機械自然B":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
 label = [list(arche_dict[key].keys()) for key in arche_dict]
 arche_label = sum(label,[])
 
@@ -207,7 +206,7 @@ async def on_message(message):
                 continue
                 
         #カウンターの更新
-        arche_dict = {"E":{"Control_E":E1, "M-N_E":E2, "Other_E":OE},"R": {"Evolve_R":R1, "M-N_R":R2, "Other_R":OR},"W": {"Natura_W":W1, "Spell_W":W2, "Other_W":OW},"D": {"M-N_D":D1, "Evolve_D":D2, "Other_D":OD},"Nc": {"M-N_Nc":Nc1, "Machina_Nc":Nc2, "Natura_Nc":Nc3,  "Other_Nc":ONc},"V": {"M-N_V":V1, "Midrange_V":V2, "Other_V":OV},"B": {"M-N_B":B1,"Other_B":OB},"Nm": {"AF_Nm":Nm1, "M-N_Nm":Nm2, "Other_Nm":ONm}}
+        arche_dict = {"E":{"コントロールE":E1, "機械自然E":E2, "その他E":OE},"R": {"進化R":R1, "機械自然R":R2, "その他R":OR},"W": {"自然W":W1, "スペルW":W2, "その他W":OW},"D": {"機械自然D":D1, "進化D":D2, "その他D":OD},"Nc": {"機械自然Nc":Nc1, "機械Nc":Nc2, "自然Nc":Nc3,  "その他Nc":ONc},"V": {"機械自然V":V1, "ミッドレンジV":V2, "その他V":OV},"B": {"機械自然B":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
         
         #クラスのカウント、ラベル
         class_count = np.array([E, R, W, D, Nc, V, B, Nm])
@@ -226,15 +225,19 @@ async def on_message(message):
         if archetype_name in message.content and is_final == "決勝トーナメント":
             df_arche_summary = pd.DataFrame(arche_summary)
             df_arche_summary = df_arche_summary.fillna(0).astype("int")
-            fig, ax = plt.subplots(figsize=(12,12))
+            fig, ax = plt.subplots()
             ax.axis("off")
             ax.axis("tight")
-            tb = ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,loc='center',bbox=[0,0,1,1], cellLoc="center")
+            tb = ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,colWidths=[0.15]*len(df_arche_summary.columns),loc='center',bbox=[0,0,1,1], cellLoc="center", rowLoc="right")
+            tb.auto_set_font_size(False)
+            tb.set_fontsize(8)
             for i in range(len(df_arche_summary.columns)):
-                tb[0,i].set_text_props(font_properties=fontprop)
+                tb[0,i].set_text_props(font_properties=fontprop, weight='bold', color="w")
+                tb[0,i].set_facecolor('#2b333b')
             for k in range(1,len(df_arche_summary.index)+1):
-                tb[k,-1].set_text_props(font_properties=fontprop)
-            plt.savefig("list_" + archetype_name + "_" + compe_num + ".png")
+                tb[k,-1].set_text_props(font_properties=fontprop, weight='bold', color="w")
+                tb[k,-1].set_facecolor('#2b333b')
+            plt.savefig("list_" + archetype_name + "_" + compe_num + ".png",bbox_inches="tight")
             
             await message.channel.send(compe_info)
             await message.channel.send(archetype_name)
@@ -249,7 +252,7 @@ async def on_message(message):
                 fig2 = plt.figure()
                 x = np.array(list(range(len(class_label))))
                 plt.bar(x, class_count, tick_label=class_label, color=class_colors)
-                plt.ylabel("number of users")
+                plt.ylabel("使用数")
                 plt.xticks(rotation=90)
                 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
                 for x, y in zip(x, class_count):
@@ -258,7 +261,7 @@ async def on_message(message):
                 fig2 = plt.figure()
                 x = np.array(list(range(len(arche_label))))
                 plt.bar(x, arche_count, tick_label=arche_label, color=arche_colors)
-                plt.ylabel("number of users")
+                plt.ylabel("使用数")
                 plt.xticks(rotation=90)
                 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.2, top=0.95)
                 for x, y in zip(x, arche_count):
