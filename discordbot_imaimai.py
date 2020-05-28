@@ -274,6 +274,9 @@ async def on_message(message):
 
     elif message.content == 'イマイ':
         await message.channel.send('Hi.')
+        
+    elif "リスト" in message.content:
+        await message.channel.send(arche_label)
 
 
 
