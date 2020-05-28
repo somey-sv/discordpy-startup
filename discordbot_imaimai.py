@@ -35,6 +35,7 @@ OE = OR = OW = OD = ONc = OV = OB = ONm = 0
 arche_dict = {"E":{"コントロールE":E1, "機械自然E":E2, "その他E":OE},"R": {"進化R":R1, "機械自然R":R2, "その他R":OR},"W": {"自然W":W1, "スペルW":W2, "その他W":OW},"D": {"機械自然D":D1, "進化D":D2, "その他D":OD},"Nc": {"機械自然Nc":Nc1, "機械Nc":Nc2, "自然Nc":Nc3,  "その他Nc":ONc},"V": {"機械自然V":V1, "ミッドレンジV":V2, "その他V":OV},"B": {"機械自然B":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
 label = [list(arche_dict[key].keys()) for key in arche_dict]
 arche_label = sum(label,[])
+arche_list = " ".join(arche_label)
 
 #クラス、デッキタイプ分析
 def deck_arche_analysis(sv_deck, sv_class):
@@ -276,7 +277,7 @@ async def on_message(message):
         await message.channel.send('Hi.')
         
     elif "リスト" in message.content:
-        await message.channel.send(arche_label)
+        await message.channel.send(arche_list)
 
 
 
