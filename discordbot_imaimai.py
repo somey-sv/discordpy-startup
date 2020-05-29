@@ -273,7 +273,7 @@ async def on_message(message):
             await message.channel.send(compe_info)
             await message.channel.send(files=analysed_data)
 
-    elif message.content == 'イマイ':
+    elif 'イマイ' in message.content:
         await message.channel.send('Hi.')
         
     elif "リスト" in message.content:
