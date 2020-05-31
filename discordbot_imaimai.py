@@ -205,20 +205,20 @@ async def on_message(message):
                         continue
             else:
                 continue
-                
+
         #カウンターの更新
         arche_dict = {"E":{"コントロールE":E1, "機械自然E":E2, "その他E":OE},"R": {"進化R":R1, "機械自然R":R2, "その他R":OR},"W": {"自然W":W1, "スペルW":W2, "その他W":OW},"D": {"機械自然D":D1, "進化D":D2, "その他D":OD},"Nc": {"機械自然Nc":Nc1, "機械Nc":Nc2, "自然Nc":Nc3,  "その他Nc":ONc},"V": {"機械自然V":V1, "ミッドレンジV":V2, "その他V":OV},"B": {"機械自然B":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
-        
+
         #クラスのカウント、ラベル
         class_count = np.array([E, R, W, D, Nc, V, B, Nm])
         class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
-        
+
         #アーキタイプのカウント、ラベル
         count = [list(arche_dict[key].values()) for key in arche_dict]
         arche_count = sum(count,[])
         label = [list(arche_dict[key].keys()) for key in arche_dict]
         arche_label = sum(label,[])
-        
+
         #カラー
         class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
         arche_colors = ["palegreen"]*len(arche_dict["E"]) +["peachpuff"]*len(arche_dict["R"]) +  ["mediumslateblue"] * len(arche_dict["W"]) + ["sienna"] * len(arche_dict["D"]) + ["darkmagenta"] * len(arche_dict["Nc"]) + ["crimson"] * len(arche_dict["V"]) + ["wheat"] * len(arche_dict["B"]) + ["lightsteelblue"] * len(arche_dict["Nm"])
@@ -239,16 +239,16 @@ async def on_message(message):
                 tb[k,-1].set_text_props(font_properties=fontprop, weight='bold', color="w")
                 tb[k,-1].set_facecolor('#2b333b')
             plt.savefig("list_" + archetype_name + "_" + compe_num + ".png",bbox_inches="tight")
-            
+
             await message.channel.send(compe_info)
             await message.channel.send(archetype_name)
             await message.channel.send(file=discord.File("list_" + archetype_name + "_" + compe_num + ".png"))
-        
+
         else:
             fig1 = plt.figure()
             plt.pie(class_count, labels=class_label, colors=class_colors, autopct="%.1f%%",pctdistance=1.35,wedgeprops={'linewidth': 2, 'edgecolor':"white"})
             fig1.savefig("class_pie_"+compe_num+".png")
-            
+
             if "クラスのみ" in message.content:
                 fig2 = plt.figure()
                 x = np.array(list(range(len(class_label))))
@@ -267,7 +267,7 @@ async def on_message(message):
                 plt.subplots_adjust(left=0.1, right=0.95, bottom=0.25, top=0.95)
                 for x, y in zip(x, arche_count):
                     plt.text(x, y, y, ha='center', va='bottom')
-                    
+
             fig2.savefig("class_bar_"+compe_num+".png")
             analysed_data = [discord.File("class_pie_" + compe_num + ".png"),discord.File("class_bar_" + compe_num + ".png"),]
             await message.channel.send(compe_info)
@@ -275,14 +275,12 @@ async def on_message(message):
 
     elif 'イマイ' in message.content:
         await message.channel.send('Hi.')
-        
+
     elif message.content == "リスト":
         await message.channel.send(arche_list)
-    
+
     elif "ミスター・ポポ" in message.content:
         await message.channel.send(file=discord.File("popo.jpg"))
-
-
 
 # Botの起動とDiscordサーバーへの接続
 client.run(TOKEN)
