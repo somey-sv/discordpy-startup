@@ -279,8 +279,8 @@ async def on_message(message):
     elif "リスト" in message.content:
         await message.channel.send(arche_list)
     
-    #elif "ミスターポポ" or "ミスター・ポポ" in message.content:
-        #await message.channel.send(file=discord.File("popo.jpg"))
+    elif "ミスター・ポポ" in message.content:
+        await message.channel.send(file=discord.File("popo.jpg"))
 
 
 
