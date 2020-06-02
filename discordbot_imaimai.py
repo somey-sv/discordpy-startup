@@ -239,7 +239,7 @@ async def on_message(message):
                 tb[k,-1].set_text_props(font_properties=fontprop, weight='bold', color="w")
                 tb[k,-1].set_facecolor('#2b333b')
             plt.savefig("list_" + archetype_name + "_" + compe_num + ".png",bbox_inches="tight")
-            df_arche_summary.to_csv(r".\Graphs\list_" + archetype_name + "_" + compe_num + ".csv", encoding="shift_jis")
+            df_arche_summary.to_csv("list_" + archetype_name + "_" + compe_num + ".csv", encoding="shift_jis")
 
             await message.channel.send(compe_info)
             await message.channel.send(archetype_name)
