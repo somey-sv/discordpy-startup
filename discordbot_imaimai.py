@@ -281,6 +281,9 @@ async def on_message(message):
 
     elif "ミスター・ポポ" in message.content:
         await message.channel.send(file=discord.File("popo.jpg"))
+        
+    elif "これはテストです、" in message.content:
+        await message.channel.send(file=discord.File("class_pie_2210.png"))
 
 # Botの起動とDiscordサーバーへの接続
 client.run(TOKEN)
