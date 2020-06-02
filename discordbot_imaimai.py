@@ -11,6 +11,7 @@ import numpy as np
 import os
 import pandas as pd
 from matplotlib.font_manager import FontProperties
+import openpyxl
 
 fontprop = FontProperties(fname="ipaexg.ttf")
 
