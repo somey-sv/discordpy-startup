@@ -80,7 +80,7 @@ def deck_arche_analysis(sv_deck, sv_class):
             return list(arche_dict["W"].keys())[2]
     elif sv_class == 4:
         D += 1
-        if sv_deck.count("6_upC") == 3:
+        if sv_deck.count("6y9Yi") == 3:
             D1 += 1
             return list(arche_dict["D"].keys())[0]
         elif sv_deck.count("6lDvy") == 3:
@@ -113,7 +113,7 @@ def deck_arche_analysis(sv_deck, sv_class):
             return list(arche_dict["V"].keys())[2]
     elif sv_class == 7:
         B += 1
-        if sv_deck.count("6nqfg") == 3:
+        if sv_deck.count("6nupS") == 3:
             B1 += 1
             return list(arche_dict["B"].keys())[0]
         else:
