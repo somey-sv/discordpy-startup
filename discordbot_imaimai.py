@@ -72,7 +72,7 @@ def deck_arche_analysis(sv_deck, sv_class):
         if sv_deck.count("6t_Rc") == 3:
             W1 += 1
             return list(arche_dict["W"].keys())[0]
-        elif sv_deck.count("6xiFi") == 3:
+        elif sv_deck.count("6q95g") == 3:
             W2 += 1
             return list(arche_dict["W"].keys())[1]
         else:
@@ -91,7 +91,7 @@ def deck_arche_analysis(sv_deck, sv_class):
             return list(arche_dict["D"].keys())[2]
     elif sv_class == 5:
         Nc += 1
-        if sv_deck.count("5_Qqi") == 3:
+        if sv_deck.count("70OYI") == 3:
             Nc1 += 1
             return list(arche_dict["Nc"].keys())[0]
         elif sv_deck.count("6qy7I") == 3:
@@ -105,7 +105,7 @@ def deck_arche_analysis(sv_deck, sv_class):
         if sv_deck.count("6rGOA") == 3:
             V1 += 1
             return list(arche_dict["V"].keys())[0]
-        elif sv_deck.count("6owk2") ==3:
+        elif sv_deck.count("6v1MC") ==3:
             V2 += 1
             return list(arche_dict["V"].keys())[1]
         else:
