@@ -29,10 +29,10 @@ def get_deck(url):
 
 #クラス、アーキタイプカウンターの初期化
 E = R = W = D = Nc = V = B = Nm = 0
-E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = Nc3 = V1 = V2 = B1 = Nm1 = Nm2 = 0
+E1 = E2 = E3 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = V1 = V2 = B1 = Nm1 = Nm2 = 0
 OE = OR = OW = OD = ONc = OV = OB = ONm = 0
 #クラス、アーキタイプ、カウントの一覧作成
-arche_dict = {"E":{"コントロールE":E1, "機械自然E":E2, "その他E":OE},"R": {"進化R":R1, "機械自然R":R2, "その他R":OR},"W": {"自然W":W1, "スペルW":W2, "その他W":OW},"D": {"機械自然D":D1, "進化D":D2, "その他D":OD},"Nc": {"機械自然Nc":Nc1, "機械Nc":Nc2, "自然Nc":Nc3,  "その他Nc":ONc},"V": {"機械自然V":V1, "ミッドレンジV":V2, "その他V":OV},"B": {"機械自然B":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
+arche_dict = {"E":{"リノセウスE":E1, "異形E":E2, "アマツE":E3, "その他E":OE},"R": {"連携R":R1, "進化R":R2, "その他R":OR},"W": {"秘術W":W1, "専門店W":W2, "その他W":OW},"D": {"ディスカードD":D1, "進化D":D2, "その他D":OD},"Nc": {"葬送Nc":Nc1, "自然Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "狂乱V":V2, "その他V":OV},"B": {"エイラB":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
 label = [list(arche_dict[key].keys()) for key in arche_dict]
 arche_label = sum(label,[])
 arche_list = ", ".join(arche_label)
@@ -40,25 +40,28 @@ arche_list = ", ".join(arche_label)
 #クラス、デッキタイプ分析
 def deck_arche_analysis(sv_deck, sv_class):
     global E,R,W,D,Nc,V,B,Nm
-    global E1,E2,R1,R2,W1,W2,D1,D2,Nc1,Nc2,Nc3,V1,V2,B1,Nm1,Nm2
+    global E1,E2,E3,R1,R2,W1,W2,D1,D2,Nc1,Nc2,V1,V2,B1,Nm1,Nm2
     global OE,OR,OW,OD,ONc,OV,OB,ONm
     if sv_class == 1:
         E += 1
         if sv_deck.count("6lZu2") == 3:
             E1 += 1
             return list(arche_dict["E"].keys())[0]
-        elif sv_deck.count("6wgKy") == 3:
+        elif sv_deck.count("6-suS") == 3:
             E2 += 1
             return list(arche_dict["E"].keys())[1]
+        elif sv_deck.count("6pQTI") == 3:
+            E3 += 1
+            return list(arche_dict["E"].keys())[2]
         else:
             OE += 1
-            return list(arche_dict["E"].keys())[2]
+            return list(arche_dict["E"].keys())[3]
     elif sv_class == 2:
         R += 1
-        if sv_deck.count("6td0o") == 3:
+        if sv_deck.count("6_B9A") == 3:
             R1 += 1
             return list(arche_dict["R"].keys())[0]
-        elif sv_deck.count("6wgKy") == 3:
+        elif sv_deck.count("5-K1I") == 3:
             R2 += 1
             return list(arche_dict["R"].keys())[1]
         else:
@@ -66,10 +69,10 @@ def deck_arche_analysis(sv_deck, sv_class):
             return list(arche_dict["R"].keys())[2]
     elif sv_class == 3:
         W += 1
-        if sv_deck.count("6q8s2") == 3:
+        if sv_deck.count("6t_Rc") == 3:
             W1 += 1
             return list(arche_dict["W"].keys())[0]
-        elif sv_deck.count("6t_RI") == 3:
+        elif sv_deck.count("6xiFi") == 3:
             W2 += 1
             return list(arche_dict["W"].keys())[1]
         else:
@@ -94,12 +97,9 @@ def deck_arche_analysis(sv_deck, sv_class):
         elif sv_deck.count("6jJrc") > 1:
             Nc2 += 1
             return list(arche_dict["Nc"].keys())[1]
-        elif sv_deck.count("6qy7I") == 3:
-            Nc3 += 1
-            return list(arche_dict["Nc"].keys())[2]
         else:
             ONc += 1
-            return list(arche_dict["Nc"].keys())[3]
+            return list(arche_dict["Nc"].keys())[2]
     elif sv_class == 6:
         V += 1
         if sv_deck.count("6wgKy") == 3:
@@ -156,10 +156,10 @@ async def on_message(message):
 
         #クラスカウンターの初期化
         global E,R,W,D,Nc,V,B,Nm
-        global E1,E2,R1,R2,W1,W2,D1,D2,Nc1,Nc2,Nc3,V1,V2,B1,Nm1,Nm2
+        global E1,E2,E3,R1,R2,W1,W2,D1,D2,Nc1,Nc2,V1,V2,B1,Nm1,Nm2
         global OE,OR,OW,OD,ONc,OV,OB,ONm
         E = R = W = D = Nc = V = B = Nm = 0
-        E1 = E2 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = Nc3 = V1 = V2 = B1 = Nm1 = Nm2 = 0
+        E1 = E2 = E3 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = V1 = V2 = B1 = Nm1 = Nm2 = 0
         OE = OR = OW = OD = ONc = OV = OB = ONm = 0
         arche_summary = {}
         archetype_name = "initialize"
@@ -207,7 +207,7 @@ async def on_message(message):
                 continue
 
         #カウンターの更新
-        arche_dict = {"E":{"コントロールE":E1, "機械自然E":E2, "その他E":OE},"R": {"進化R":R1, "機械自然R":R2, "その他R":OR},"W": {"自然W":W1, "スペルW":W2, "その他W":OW},"D": {"機械自然D":D1, "進化D":D2, "その他D":OD},"Nc": {"機械自然Nc":Nc1, "機械Nc":Nc2, "自然Nc":Nc3,  "その他Nc":ONc},"V": {"機械自然V":V1, "ミッドレンジV":V2, "その他V":OV},"B": {"機械自然B":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
+        arche_dict = {"E":{"リノセウスE":E1, "異形E":E2, "アマツE":E3, "その他E":OE},"R": {"連携R":R1, "進化R":R2, "その他R":OR},"W": {"秘術W":W1, "専門店W":W2, "その他W":OW},"D": {"ディスカードD":D1, "進化D":D2, "その他D":OD},"Nc": {"葬送Nc":Nc1, "自然Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "狂乱V":V2, "その他V":OV},"B": {"エイラB":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
 
         #クラスのカウント、ラベル
         class_count = np.array([E, R, W, D, Nc, V, B, Nm])
