@@ -276,8 +276,8 @@ async def on_message(message):
     elif "ハワイマイ" in message.content:
         await message.channel.send(file=discord.File("hawaimai.jpg"))
         
-    elif "ポポイマイ" in message.content:
-        await message.channel.send(file=discord.File("popoimai.jpeg"))
+    elif "ミスティング・ポポ" in message.content:
+        await message.channel.send(file=discord.File("mysting_popo.png"))
 
     elif 'イマイ' in message.content:
         await message.channel.send('Hi.')
