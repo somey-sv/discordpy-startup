@@ -32,7 +32,7 @@ E = R = W = D = Nc = V = B = Nm = 0
 E1 = E2 = E3 = R1 = R2 = W1 = W2 = D1 = D2 = Nc1 = Nc2 = V1 = V2 = B1 = Nm1 = Nm2 = 0
 OE = OR = OW = OD = ONc = OV = OB = ONm = 0
 #クラス、アーキタイプ、カウントの一覧作成
-arche_dict = {"E":{"リノセウスE":E1, "異形E":E2, "アマツE":E3, "その他E":OE},"R": {"進化R":R1, "連携R":R2, "その他R":OR},"W": {"秘術W":W1, "専門店W":W2, "その他W":OW},"D": {"ディスカードD":D1, "進化D":D2, "その他D":OD},"Nc": {"葬送Nc":Nc1, "自然Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "狂乱V":V2, "その他V":OV},"B": {"エイラB":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
+arche_dict = {"E":{"リノセウスE":E1, "異形E":E2, "アマツE":E3, "その他E":OE},"R": {"進化R":R1, "連携R":R2, "その他R":OR},"W": {"秘術W":W1, "専門店W":W2, "その他W":OW},"D": {"ディスカードD":D1, "進化D":D2, "その他D":OD},"Nc": {"冥府葬送Nc":Nc1, "葬送Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "狂乱V":V2, "その他V":OV},"B": {"エイラB":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
 label = [list(arche_dict[key].keys()) for key in arche_dict]
 arche_label = sum(label,[])
 arche_list = ", ".join(arche_label)
@@ -91,10 +91,10 @@ def deck_arche_analysis(sv_deck, sv_class):
             return list(arche_dict["D"].keys())[2]
     elif sv_class == 5:
         Nc += 1
-        if sv_deck.count("70OYI") == 3:
+        if sv_deck.count("6n7-I") == 3:
             Nc1 += 1
             return list(arche_dict["Nc"].keys())[0]
-        elif sv_deck.count("6qy7I") == 3:
+        elif sv_deck.count("70OYI") == 3:
             Nc2 += 1
             return list(arche_dict["Nc"].keys())[1]
         else:
@@ -207,7 +207,7 @@ async def on_message(message):
                 continue
 
         #カウンターの更新
-        arche_dict = {"E":{"リノセウスE":E1, "異形E":E2, "アマツE":E3, "その他E":OE},"R": {"進化R":R1, "連携R":R2, "その他R":OR},"W": {"秘術W":W1, "専門店W":W2, "その他W":OW},"D": {"ディスカードD":D1, "進化D":D2, "その他D":OD},"Nc": {"葬送Nc":Nc1, "自然Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "狂乱V":V2, "その他V":OV},"B": {"エイラB":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
+        arche_dict = {"E":{"リノセウスE":E1, "異形E":E2, "アマツE":E3, "その他E":OE},"R": {"進化R":R1, "連携R":R2, "その他R":OR},"W": {"秘術W":W1, "専門店W":W2, "その他W":OW},"D": {"ディスカードD":D1, "進化D":D2, "その他D":OD},"Nc": {"冥府葬送Nc":Nc1, "葬送Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "狂乱V":V2, "その他V":OV},"B": {"エイラB":B1,"その他B":OB},"Nm": {"AFNm":Nm1, "機械自然Nm":Nm2, "その他Nm":ONm}}
 
         #クラスのカウント、ラベル
         class_count = np.array([E, R, W, D, Nc, V, B, Nm])
