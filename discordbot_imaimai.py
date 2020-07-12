@@ -273,6 +273,9 @@ async def on_message(message):
             await message.channel.send(compe_info)
             await message.channel.send(files=analysed_data)
         
+    elif "はわチャ" in message.content or "ハワチャ" in message.content:
+        await message.channel.send(file=discord.File("はわチャ.jpg"))
+        
     elif "幸せ" in message.content:
         await message.channel.send(file=discord.File("おかけん.png"))
         
