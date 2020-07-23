@@ -272,6 +272,9 @@ async def on_message(message):
             analysed_data = [discord.File("class_pie_" + compe_num + ".png"),discord.File("class_bar_" + compe_num + ".png"),]
             await message.channel.send(compe_info)
             await message.channel.send(files=analysed_data)
+            
+    elif "あそぶ" in message.content:
+        await message.channel.send(file=discord.File("asobu.jpg"))
         
     elif "はわチャ" in message.content or "ハワチャ" in message.content:
         await message.channel.send(file=discord.File("はわチャ.jpg"))
