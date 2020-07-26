@@ -273,6 +273,9 @@ async def on_message(message):
             await message.channel.send(compe_info)
             await message.channel.send(files=analysed_data)
             
+    elif "おめでとう！！" in message.content:
+        await message.channel.send(file=discord.File("omedetou.jpg"))
+            
     elif "あそぶ" in message.content:
         await message.channel.send(file=discord.File("asobu.jpg"))
         
