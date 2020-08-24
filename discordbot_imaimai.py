@@ -124,7 +124,7 @@ def deck_arche_analysis(sv_deck, sv_class):
             return list(arche_dict["B"].keys())[2]
     elif sv_class == 8:
         Nm += 1
-        if sv_deck.count("gZ1SK") == 3:
+        if sv_deck.count("6zd2w") == 3:
             Nm1 += 1
             return list(arche_dict["Nm"].keys())[0]
         else:
