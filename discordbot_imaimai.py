@@ -47,7 +47,7 @@ def deck_arche_analysis(sv_deck, sv_class):
         if sv_deck.count("6lZu2") == 3:
             E1 += 1
             return list(arche_dict["E"].keys())[0]
-        elif sv_deck.count("6lDvy") == 3:
+        elif sv_deck.count("6lDvy") > 0:
             E2 += 1
             return list(arche_dict["E"].keys())[1]
         else:
