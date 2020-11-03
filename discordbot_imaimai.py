@@ -27,6 +27,35 @@ def get_deck(url):
     deck = {name.text: int(count.text[1:]) for name, count in zip(names, counts)}
     return deck
 
+#2pick解析
+def get_2pick_results(compe_num):
+    url = "https://sv.j-cg.com/compe/view/gamelist/" + compe_num
+    res = requests.get(url)
+    soup = bs4.BeautifulSoup(res.text, "html.parser")
+    img_elements = soup.findAll('img')
+    src_list = [e['src'] for e in img_elements]
+    leader_img_list = []
+    keyword = "clans"
+
+    for src in src_list:
+        if keyword in src:
+            leader_img_list.append(src)
+
+    num = re.compile(r"\d")
+
+    leader_num_list = []
+    for leader_img in leader_img_list:
+        leader_num = num.search(leader_img).group()
+        leader_num_list.append(leader_num)
+
+    pick_results = []
+
+    for i in range(8):
+        pick_results.append(leader_num_list.count(str(i+1)))
+
+    return pick_results
+
+
 #クラス、アーキタイプカウンターの初期化
 E = R = W = D = Nc = V = B = Nm = 0
 E1 = E2 = R1 = R2 = W1 = W2 = W3 = D1 = D2 = Nc1 = Nc2 = V1 = V2 = B1 = B2 = Nm1 = 0
