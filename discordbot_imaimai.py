@@ -184,11 +184,12 @@ async def on_message(message):
         compe = re.compile(r"\d\d\d\d")
         compe_num = compe.search(message.content).group()
         
-        await message.channel.send(compe_num)
+        
         pick_results = get_2pick_results(str(compe_num))
         class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
         class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
         
+        await message.channel.send(compe_num)
         fig3 = plt.figure()
         x = np.array(list(range(len(class_label))))
         plt.bar(x, pick_results, color=class_colors)
