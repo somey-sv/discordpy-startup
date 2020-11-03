@@ -189,10 +189,11 @@ async def on_message(message):
         class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
         class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
         
-        await message.channel.send(compe_num)
+        
         fig3 = plt.figure()
         x = np.array(list(range(len(class_label))))
         plt.bar(x, pick_results, color=class_colors)
+        await message.channel.send(pick_results[1])
         plt.ylabel("使用数",font_properties=fontprop)
         plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
         plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
