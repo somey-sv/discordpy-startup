@@ -132,6 +132,34 @@ def deck_arche_analysis(sv_deck, sv_class):
             return list(arche_dict["Nm"].keys())[1]
 
         
+def get_2pick_results(compe_num):
+    url = "https://sv.j-cg.com/compe/view/gamelist/" + compe_num
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, "html.parser")
+    img_elements = soup.findAll('img')
+    src_list = [e['src'] for e in img_elements]
+    leader_img_list = []
+    keyword = "clans"
+
+    for src in src_list:
+        if keyword in src:
+            leader_img_list.append(src)
+
+    num = re.compile(r"\d")
+
+    leader_num_list = []
+    for leader_img in leader_img_list:
+        leader_num = num.search(leader_img).group()
+        leader_num_list.append(leader_num)
+
+    pick_resutls = []
+
+    for i in range(8):
+        pick_resutls.append(leader_num_list.count(str(i+1)))
+
+    return pick_resutls
+        
+
 TOKEN = os.environ['DISCORD_BOT_TOKEN']
 
 # 接続に必要なオブジェクトを生成
@@ -152,6 +180,48 @@ async def on_message(message):
         return
 
     elif "sv.j-cg.com" in message.content:
+        
+        
+        #大会番号を取得
+        compe = re.compile(r"\d\d\d\d")
+        compe_num = compe.search(message.content).group()
+        
+        #大会のjsonファイルのURLを取得
+        jcg_url = "https://sv.j-cg.com/compe/view/entrylist/" +  str(compe_num) + "/json"
+        #大会情報のURLを取得
+        info_url = "https://sv.j-cg.com/compe/"+str(compe_num)
+        
+        #大会情報を取得
+        res_info = requests.get(info_url)
+        res_info.encoding = res_info.apparent_encoding
+        soup_info = bs4.BeautifulSoup(res_info.text, "html.parser")
+        info = soup_info.select(".nobr")
+        is_final = info[8].text
+        compe_info = [x.text for x in info]
+        compe_info = " ".join(compe_info)
+        
+        class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
+        
+        if info[7] == "2Pick大会":
+            pick_resutls = get_2pick_results(str(compe_num))
+            
+            class_count = np.array(pick_resutls)
+            
+            fig1 = plt.figure()
+            x = np.array(list(range(len(class_label))))
+            plt.bar(x, class_count, color=class_colors)
+            plt.ylabel("勝利数",font_properties=fontprop)
+            plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
+            plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
+            for x, y in zip(x, class_count):
+                plt.text(x, y, y, ha='center', va='bottom')
+            
+            fig1.savefig("results_2pick_"+compe_num+".png")
+            
+            await message.channel.send(compe_info)
+            await message.channel.send(file=discord.File("results_2pick_"+compe_num+".png"))
+            break                                 
+                                             
 
         #クラスカウンターの初期化
         global E,R,W,D,Nc,V,B,Nm
@@ -163,22 +233,6 @@ async def on_message(message):
         arche_summary = {}
         archetype_name = "initialize"
 
-        #大会番号を取得
-        compe = re.compile(r"\d\d\d\d")
-        compe_num = compe.search(message.content).group()
-        #大会のjsonファイルのURLを取得
-        jcg_url = "https://sv.j-cg.com/compe/view/entrylist/" +  str(compe_num) + "/json"
-        #大会情報のURLを取得
-        info_url = "https://sv.j-cg.com/compe/"+str(compe_num)
-
-        #大会情報を取得
-        res_info = requests.get(info_url)
-        res_info.encoding = res_info.apparent_encoding
-        soup_info = bs4.BeautifulSoup(res_info.text, "html.parser")
-        info = soup_info.select(".nobr")
-        is_final = info[8].text
-        compe_info = [x.text for x in info]
-        compe_info = " ".join(compe_info)
 
         #大会のjsonファイルを取得
         res_jcg = requests.get(jcg_url)
@@ -209,7 +263,6 @@ async def on_message(message):
         arche_dict = {"E":{"リノセウスE":E1, "コントロールE":E2, "その他E":OE},"R": {"進化R":R1, "連携R":R2, "その他R":OR},"W": {"スペルW":W1, "専門店W":W2, "秘術W":W3, "その他W":OW},"D": {"ディスカードD":D1, "ホエールD":D2, "その他D":OD},"Nc": {"冥府Nc":Nc1, "葬送Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "バアルV":V2, "その他V":OV},"B": {"エイラB":B1, "ラーB":B2, "その他B":OB},"Nm": {"AFNm":Nm1, "その他Nm":ONm}}
         #クラスのカウント、ラベル
         class_count = np.array([E, R, W, D, Nc, V, B, Nm])
-        class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
 
         #アーキタイプのカウント、ラベル
         count = [list(arche_dict[key].values()) for key in arche_dict]
