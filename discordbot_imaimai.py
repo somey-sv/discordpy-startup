@@ -1,4 +1,4 @@
-# インストールした discord.py を読み込む
+# # インストールした discord.py を読み込む
 import discord
 import re
 import requests
@@ -132,34 +132,6 @@ def deck_arche_analysis(sv_deck, sv_class):
             return list(arche_dict["Nm"].keys())[1]
 
         
-def get_2pick_results(compe_num):
-    url = "https://sv.j-cg.com/compe/view/gamelist/" + compe_num
-    res = requests.get(url)
-    soup = bs4.BeautifulSoup(res.text, "html.parser")
-    img_elements = soup.findAll('img')
-    src_list = [e['src'] for e in img_elements]
-    leader_img_list = []
-    keyword = "clans"
-
-    for src in src_list:
-        if keyword in src:
-            leader_img_list.append(src)
-
-    num = re.compile(r"\d")
-
-    leader_num_list = []
-    for leader_img in leader_img_list:
-        leader_num = num.search(leader_img).group()
-        leader_num_list.append(leader_num)
-
-    pick_resutls = []
-
-    for i in range(8):
-        pick_resutls.append(leader_num_list.count(str(i+1)))
-
-    return pick_resutls
-        
-
 TOKEN = os.environ['DISCORD_BOT_TOKEN']
 
 # 接続に必要なオブジェクトを生成
@@ -180,17 +152,25 @@ async def on_message(message):
         return
 
     elif "sv.j-cg.com" in message.content:
-        
-        
+
+        #クラスカウンターの初期化
+        global E,R,W,D,Nc,V,B,Nm
+        global E1,E2,R1,R2,W1,W2,W3,D1,D2,Nc1,Nc2,V1,V2,B1,B2,Nm1
+        global OE,OR,OW,OD,ONc,OV,OB,ONm
+        E = R = W = D = Nc = V = B = Nm = 0
+        E1 = E2 = R1 = R2 = W1 = W2 = W3 = D1 = D2 = Nc1 = Nc2 = V1 = V2 = B1 = B2 = Nm1 = 0
+        OE = OR = OW = OD = ONc = OV = OB = ONm = 0
+        arche_summary = {}
+        archetype_name = "initialize"
+
         #大会番号を取得
         compe = re.compile(r"\d\d\d\d")
         compe_num = compe.search(message.content).group()
-        
         #大会のjsonファイルのURLを取得
         jcg_url = "https://sv.j-cg.com/compe/view/entrylist/" +  str(compe_num) + "/json"
         #大会情報のURLを取得
         info_url = "https://sv.j-cg.com/compe/"+str(compe_num)
-        
+
         #大会情報を取得
         res_info = requests.get(info_url)
         res_info.encoding = res_info.apparent_encoding
@@ -199,130 +179,97 @@ async def on_message(message):
         is_final = info[8].text
         compe_info = [x.text for x in info]
         compe_info = " ".join(compe_info)
-        
-        class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
-        class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
-        
-        if info[7] == "2Pick大会":
-            pick_resutls = get_2pick_results(str(compe_num))
-            
-            class_count = np.array(pick_resutls)
-            
-            fig1 = plt.figure()
-            x = np.array(list(range(len(class_label))))
-            plt.bar(x, class_count, color=class_colors)
-            plt.ylabel("勝利数",font_properties=fontprop)
-            plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
-            plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
-            for x, y in zip(x, class_count):
-                plt.text(x, y, y, ha='center', va='bottom')
-            
-            fig1.savefig("results_2pick_"+compe_num+".png")
-            
-            await message.channel.send(compe_info)
-            await message.channel.send(file=discord.File("results_2pick_"+compe_num+".png"))
-                                            
-                                             
-        else:
-            #クラスカウンターの初期化
-            global E,R,W,D,Nc,V,B,Nm
-            global E1,E2,R1,R2,W1,W2,W3,D1,D2,Nc1,Nc2,V1,V2,B1,B2,Nm1
-            global OE,OR,OW,OD,ONc,OV,OB,ONm
-            E = R = W = D = Nc = V = B = Nm = 0
-            E1 = E2 = R1 = R2 = W1 = W2 = W3 = D1 = D2 = Nc1 = Nc2 = V1 = V2 = B1 = B2 = Nm1 = 0
-            OE = OR = OW = OD = ONc = OV = OB = ONm = 0
-            arche_summary = {}
-            archetype_name = "initialize"
 
-
-            #大会のjsonファイルを取得
-            res_jcg = requests.get(jcg_url)
-            res_jcg.encoding = res_jcg.apparent_encoding
-            soup = bs4.BeautifulSoup(res_jcg.text, "html.parser")
-            j_txt = json.loads(res_jcg.text)
+        #大会のjsonファイルを取得
+        res_jcg = requests.get(jcg_url)
+        res_jcg.encoding = res_jcg.apparent_encoding
+        soup = bs4.BeautifulSoup(res_jcg.text, "html.parser")
+        j_txt = json.loads(res_jcg.text)
 
         #クラス数の取得
-            for i in range(len(j_txt["participants"])):
-                if j_txt["participants"][i]["te"] == 0:
-                    continue
-                elif j_txt["participants"][i]["te"] == 1:
-                    for j in range(2):
-                        class_ij = j_txt["participants"][i]["dk"][j]["cl"]
-                        deck_ij = j_txt["participants"][i]["dk"][j]["hs"]
-                        archetype = deck_arche_analysis(deck_ij, class_ij)
-                        if archetype in message.content:
-                            dbsp_url = dbsp_header+deck_ij
-                            deck_dict = get_deck(dbsp_url)
-                            arche_summary[j_txt["participants"][i]["nm"]] = deck_dict
-                            archetype_name = archetype
-                        else:
-                            continue
-                else:
-                    continue
-
-            #カウンターの更新
-            arche_dict = {"E":{"リノセウスE":E1, "コントロールE":E2, "その他E":OE},"R": {"進化R":R1, "連携R":R2, "その他R":OR},"W": {"スペルW":W1, "専門店W":W2, "秘術W":W3, "その他W":OW},"D": {"ディスカードD":D1, "ホエールD":D2, "その他D":OD},"Nc": {"冥府Nc":Nc1, "葬送Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "バアルV":V2, "その他V":OV},"B": {"エイラB":B1, "ラーB":B2, "その他B":OB},"Nm": {"AFNm":Nm1, "その他Nm":ONm}}
-            #クラスのカウント、ラベル
-            class_count = np.array([E, R, W, D, Nc, V, B, Nm])
-
-            #アーキタイプのカウント、ラベル
-            count = [list(arche_dict[key].values()) for key in arche_dict]
-            arche_count = sum(count,[])
-            label = [list(arche_dict[key].keys()) for key in arche_dict]
-            arche_label = sum(label,[])
-    
-            #カラー
-            arche_colors = ["palegreen"]*len(arche_dict["E"]) +["peachpuff"]*len(arche_dict["R"]) +  ["mediumslateblue"] * len(arche_dict["W"]) + ["sienna"] * len(arche_dict["D"]) + ["darkmagenta"] * len(arche_dict["Nc"]) + ["crimson"] * len(arche_dict["V"]) + ["wheat"] * len(arche_dict["B"]) + ["lightsteelblue"] * len(arche_dict["Nm"])
-
-            if archetype_name in message.content and is_final == "決勝トーナメント":
-                df_arche_summary = pd.DataFrame(arche_summary)
-                df_arche_summary = df_arche_summary.fillna(0).astype("int")
-                fig, ax = plt.subplots()
-                ax.axis("off")
-                ax.axis("tight")
-                tb = ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,colWidths=[0.15]*len(df_arche_summary.columns),loc='center',bbox=[0,0,1,1], cellLoc="center", rowLoc="right")
-                tb.auto_set_font_size(False)
-                tb.set_fontsize(8)
-                for i in range(len(df_arche_summary.columns)):
-                    tb[0,i].set_text_props(font_properties=fontprop, weight='bold', color="w")
-                    tb[0,i].set_facecolor('#2b333b')
-                for k in range(1,len(df_arche_summary.index)+1):
-                    tb[k,-1].set_text_props(font_properties=fontprop, weight='bold', color="w")
-                    tb[k,-1].set_facecolor('#2b333b')
-                plt.savefig("list_" + archetype_name + "_" + compe_num + ".png",bbox_inches="tight")
-
-                await message.channel.send(compe_info)
-                await message.channel.send(archetype_name)
-                await message.channel.send(file=discord.File("list_" + archetype_name + "_" + compe_num + ".png"))
-
+        for i in range(len(j_txt["participants"])):
+            if j_txt["participants"][i]["te"] == 0:
+                continue
+            elif j_txt["participants"][i]["te"] == 1:
+                for j in range(2):
+                    class_ij = j_txt["participants"][i]["dk"][j]["cl"]
+                    deck_ij = j_txt["participants"][i]["dk"][j]["hs"]
+                    archetype = deck_arche_analysis(deck_ij, class_ij)
+                    if archetype in message.content:
+                        dbsp_url = dbsp_header+deck_ij
+                        deck_dict = get_deck(dbsp_url)
+                        arche_summary[j_txt["participants"][i]["nm"]] = deck_dict
+                        archetype_name = archetype
+                    else:
+                        continue
             else:
-                fig1 = plt.figure()
-                plt.pie(class_count, labels=class_label, colors=class_colors, autopct="%.1f%%",pctdistance=1.35,wedgeprops={'linewidth': 2, 'edgecolor':"white"})
-                fig1.savefig("class_pie_"+compe_num+".png")
+                continue
 
-                if "クラスのみ" in message.content:
-                    fig2 = plt.figure()
-                    x = np.array(list(range(len(class_label))))
-                    plt.bar(x, class_count, color=class_colors)
-                    plt.ylabel("使用数",font_properties=fontprop)
-                    plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
-                    plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
-                    for x, y in zip(x, class_count):
-                        plt.text(x, y, y, ha='center', va='bottom')
-                else:
-                    fig2 = plt.figure()
-                    x = np.array(list(range(len(arche_label))))
-                    plt.bar(x, arche_count, color=arche_colors)
-                    plt.ylabel("使用数",font_properties=fontprop)
-                    plt.xticks(x,arche_label,rotation=90,font_properties=fontprop)
-                    plt.subplots_adjust(left=0.1, right=0.95, bottom=0.25, top=0.95)
-                    for x, y in zip(x, arche_count):
-                        plt.text(x, y, y, ha='center', va='bottom')
+        #カウンターの更新
+        arche_dict = {"E":{"リノセウスE":E1, "コントロールE":E2, "その他E":OE},"R": {"進化R":R1, "連携R":R2, "その他R":OR},"W": {"スペルW":W1, "専門店W":W2, "秘術W":W3, "その他W":OW},"D": {"ディスカードD":D1, "ホエールD":D2, "その他D":OD},"Nc": {"冥府Nc":Nc1, "葬送Nc":Nc2,  "その他Nc":ONc},"V": {"コントロールV":V1, "バアルV":V2, "その他V":OV},"B": {"エイラB":B1, "ラーB":B2, "その他B":OB},"Nm": {"AFNm":Nm1, "その他Nm":ONm}}
+        #クラスのカウント、ラベル
+        class_count = np.array([E, R, W, D, Nc, V, B, Nm])
+        class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
 
-                fig2.savefig("class_bar_"+compe_num+".png")
-                analysed_data = [discord.File("class_pie_" + compe_num + ".png"),discord.File("class_bar_" + compe_num + ".png"),]
-                await message.channel.send(compe_info)
-                await message.channel.send(files=analysed_data)
+        #アーキタイプのカウント、ラベル
+        count = [list(arche_dict[key].values()) for key in arche_dict]
+        arche_count = sum(count,[])
+        label = [list(arche_dict[key].keys()) for key in arche_dict]
+        arche_label = sum(label,[])
+
+        #カラー
+        class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
+        arche_colors = ["palegreen"]*len(arche_dict["E"]) +["peachpuff"]*len(arche_dict["R"]) +  ["mediumslateblue"] * len(arche_dict["W"]) + ["sienna"] * len(arche_dict["D"]) + ["darkmagenta"] * len(arche_dict["Nc"]) + ["crimson"] * len(arche_dict["V"]) + ["wheat"] * len(arche_dict["B"]) + ["lightsteelblue"] * len(arche_dict["Nm"])
+
+        if archetype_name in message.content and is_final == "決勝トーナメント":
+            df_arche_summary = pd.DataFrame(arche_summary)
+            df_arche_summary = df_arche_summary.fillna(0).astype("int")
+            fig, ax = plt.subplots()
+            ax.axis("off")
+            ax.axis("tight")
+            tb = ax.table(cellText=df_arche_summary.values,colLabels=df_arche_summary.columns,rowLabels=df_arche_summary.index,colWidths=[0.15]*len(df_arche_summary.columns),loc='center',bbox=[0,0,1,1], cellLoc="center", rowLoc="right")
+            tb.auto_set_font_size(False)
+            tb.set_fontsize(8)
+            for i in range(len(df_arche_summary.columns)):
+                tb[0,i].set_text_props(font_properties=fontprop, weight='bold', color="w")
+                tb[0,i].set_facecolor('#2b333b')
+            for k in range(1,len(df_arche_summary.index)+1):
+                tb[k,-1].set_text_props(font_properties=fontprop, weight='bold', color="w")
+                tb[k,-1].set_facecolor('#2b333b')
+            plt.savefig("list_" + archetype_name + "_" + compe_num + ".png",bbox_inches="tight")
+
+            await message.channel.send(compe_info)
+            await message.channel.send(archetype_name)
+            await message.channel.send(file=discord.File("list_" + archetype_name + "_" + compe_num + ".png"))
+
+        else:
+            fig1 = plt.figure()
+            plt.pie(class_count, labels=class_label, colors=class_colors, autopct="%.1f%%",pctdistance=1.35,wedgeprops={'linewidth': 2, 'edgecolor':"white"})
+            fig1.savefig("class_pie_"+compe_num+".png")
+
+            if "クラスのみ" in message.content:
+                fig2 = plt.figure()
+                x = np.array(list(range(len(class_label))))
+                plt.bar(x, class_count, color=class_colors)
+                plt.ylabel("使用数",font_properties=fontprop)
+                plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
+                plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
+                for x, y in zip(x, class_count):
+                    plt.text(x, y, y, ha='center', va='bottom')
+            else:
+                fig2 = plt.figure()
+                x = np.array(list(range(len(arche_label))))
+                plt.bar(x, arche_count, color=arche_colors)
+                plt.ylabel("使用数",font_properties=fontprop)
+                plt.xticks(x,arche_label,rotation=90,font_properties=fontprop)
+                plt.subplots_adjust(left=0.1, right=0.95, bottom=0.25, top=0.95)
+                for x, y in zip(x, arche_count):
+                    plt.text(x, y, y, ha='center', va='bottom')
+
+            fig2.savefig("class_bar_"+compe_num+".png")
+            analysed_data = [discord.File("class_pie_" + compe_num + ".png"),discord.File("class_bar_" + compe_num + ".png"),]
+            await message.channel.send(compe_info)
+            await message.channel.send(files=analysed_data)
             
     elif "おめでとう！！" in message.content:
         await message.channel.send(file=discord.File("omedetou.jpg"))
