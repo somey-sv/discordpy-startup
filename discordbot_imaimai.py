@@ -184,6 +184,7 @@ async def on_message(message):
         compe = re.compile(r"\d\d\d\d")
         compe_num = compe.search(message.content).group()
         
+        await message.channel.send(compe_num)
         pick_results = get_2pick_results(str(compe_num))
         class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
         class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
@@ -198,7 +199,7 @@ async def on_message(message):
             plt.text(x, y, y, ha='center', va='bottom')
         fig2.savefig("class_bar_"+compe_num+".png")
         analysed_data = [discord.File("class_bar_" + compe_num + ".png"),]
-        await message.channel.send(compe_num)
+        
         await message.channel.send(files=analysed_data)
 
     elif "sv.j-cg.com" in message.content:
