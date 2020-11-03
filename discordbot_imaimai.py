@@ -223,7 +223,7 @@ async def on_message(message):
             await message.channel.send(file=discord.File("results_2pick_"+compe_num+".png"))
                                             
                                              
-        elif info[7] == "ローテーション大会" or info[7] == "アンリミテッド大会":
+        else:
             #クラスカウンターの初期化
             global E,R,W,D,Nc,V,B,Nm
             global E1,E2,R1,R2,W1,W2,W3,D1,D2,Nc1,Nc2,V1,V2,B1,B2,Nm1
