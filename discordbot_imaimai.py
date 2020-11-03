@@ -196,6 +196,10 @@ async def on_message(message):
         plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
         for x, y in zip(x, pick_results):
             plt.text(x, y, y, ha='center', va='bottom')
+        fig2.savefig("class_bar_"+compe_num+".png")
+        analysed_data = [discord.File("class_bar_" + compe_num + ".png"),]
+        await message.channel.send(compe_num)
+        await message.channel.send(files=analysed_data)
 
     elif "sv.j-cg.com" in message.content:
 
