@@ -201,6 +201,7 @@ async def on_message(message):
         compe_info = " ".join(compe_info)
         
         class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
+        class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
         
         if info[7] == "2Pick大会":
             pick_resutls = get_2pick_results(str(compe_num))
@@ -271,7 +272,6 @@ async def on_message(message):
         arche_label = sum(label,[])
 
         #カラー
-        class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
         arche_colors = ["palegreen"]*len(arche_dict["E"]) +["peachpuff"]*len(arche_dict["R"]) +  ["mediumslateblue"] * len(arche_dict["W"]) + ["sienna"] * len(arche_dict["D"]) + ["darkmagenta"] * len(arche_dict["Nc"]) + ["crimson"] * len(arche_dict["V"]) + ["wheat"] * len(arche_dict["B"]) + ["lightsteelblue"] * len(arche_dict["Nm"])
 
         if archetype_name in message.content and is_final == "決勝トーナメント":
