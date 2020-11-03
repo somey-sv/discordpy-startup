@@ -203,13 +203,13 @@ async def on_message(message):
         class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
         class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
         
-        #if info[7] == "2Pick大会":
-         #   pick_resutls = get_2pick_results(str(compe_num))
+        if info[7] == "2Pick大会":
+            pick_resutls = get_2pick_results(str(compe_num))
             
-          #  class_count = np.array(pick_resutls)
+            class_count = np.array(pick_resutls)
             
-           # fig1 = plt.figure()
-            #x = np.array(list(range(len(class_label))))
+            fig1 = plt.figure()
+            x = np.array(list(range(len(class_label))))
           #  plt.bar(x, class_count, color=class_colors)
            # plt.ylabel("勝利数",font_properties=fontprop)
             #plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
