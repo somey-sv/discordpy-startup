@@ -217,10 +217,10 @@ async def on_message(message):
             for x, y in zip(x, class_count):
                 plt.text(x, y, y, ha='center', va='bottom')
             
-            fig1.savefig("results_2pick_"+compe_num+".png")
+            fig1.savefig("results_2pick_"+str(compe_num)+".png")
             
             await message.channel.send(compe_info)
-            await message.channel.send(file=discord.File("results_2pick_"+compe_num+".png"))
+            await message.channel.send(file=discord.File("results_2pick_"+str(compe_num)+".png"))
             break                                 
                                              
 
