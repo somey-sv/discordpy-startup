@@ -214,10 +214,10 @@ async def on_message(message):
             plt.ylabel("勝利数",font_properties=fontprop)
             plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
             plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
-          #  for x, y in zip(x, class_count):
-           #     plt.text(x, y, y, ha='center', va='bottom')
+            for x, y in zip(x, class_count):
+                plt.text(x, y, y, ha='center', va='bottom')
             
-          #  fig1.savefig("results_2pick_"+compe_num+".png")
+            fig1.savefig("results_2pick_"+compe_num+".png")
             
           #  await message.channel.send(compe_info)
            # await message.channel.send(file=discord.File("results_2pick_"+compe_num+".png"))
