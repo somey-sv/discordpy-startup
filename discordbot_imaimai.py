@@ -299,7 +299,25 @@ async def on_message(message):
             analysed_data = [discord.File("class_pie_" + compe_num + ".png"),discord.File("class_bar_" + compe_num + ".png"),]
             await message.channel.send(compe_info)
             await message.channel.send(files=analysed_data)
-            
+    
+    elif "sv.j-cg.com" in message.content and "2pick" in message.content:
+        compe = re.compile(r"\d\d\d\d")
+        compe_num = compe.search(message.content).group()
+        
+        pick_results = get_2pick_results(str(compe_num))
+        class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
+        class_colors = ["palegreen", "peachpuff", "mediumslateblue", "sienna","darkmagenta", "crimson", "wheat", "lightsteelblue"]
+        
+        fig3 = plt.figure()
+        x = np.array(list(range(len(class_label))))
+        plt.bar(x, pick_results, color=class_colors)
+        plt.ylabel("使用数",font_properties=fontprop)
+        plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
+        plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
+        for x, y in zip(x, pick_results):
+            plt.text(x, y, y, ha='center', va='bottom')
+        
+    
     elif "おめでとう！！" in message.content:
         await message.channel.send(file=discord.File("omedetou.jpg"))
             
