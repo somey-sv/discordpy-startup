@@ -210,10 +210,10 @@ async def on_message(message):
             
             fig1 = plt.figure()
             x = np.array(list(range(len(class_label))))
-          #  plt.bar(x, class_count, color=class_colors)
-           # plt.ylabel("勝利数",font_properties=fontprop)
-            #plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
-         #   plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
+            plt.bar(x, class_count, color=class_colors)
+            plt.ylabel("勝利数",font_properties=fontprop)
+            plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
+            plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
           #  for x, y in zip(x, class_count):
            #     plt.text(x, y, y, ha='center', va='bottom')
             
