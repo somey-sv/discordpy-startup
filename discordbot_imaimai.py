@@ -135,7 +135,7 @@ def deck_arche_analysis(sv_deck, sv_class):
 def get_2pick_results(compe_num):
     url = "https://sv.j-cg.com/compe/view/gamelist/" + compe_num
     res = requests.get(url)
-    soup = BeautifulSoup(res.text, "html.parser")
+    soup = bs4.BeautifulSoup(res.text, "html.parser")
     img_elements = soup.findAll('img')
     src_list = [e['src'] for e in img_elements]
     leader_img_list = []
