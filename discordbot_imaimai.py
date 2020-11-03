@@ -184,6 +184,17 @@ async def on_message(message):
         compe = re.compile(r"\d\d\d\d")
         compe_num = compe.search(message.content).group()
         
+        #大会情報のURLを取得
+        info_url = "https://sv.j-cg.com/compe/"+str(compe_num)
+
+        #大会情報を取得
+        res_info = requests.get(info_url)
+        res_info.encoding = res_info.apparent_encoding
+        soup_info = bs4.BeautifulSoup(res_info.text, "html.parser")
+        info = soup_info.select(".nobr")
+        is_final = info[8].text
+        compe_info = [x.text for x in info]
+        compe_info = " ".join(compe_info)
         
         pick_results = get_2pick_results(str(compe_num))
         class_label = ["E", "R", "W", "D", "Nc", "V", "B", "Nm"]
@@ -193,7 +204,6 @@ async def on_message(message):
         fig3 = plt.figure()
         x = np.array(list(range(len(class_label))))
         plt.bar(x, pick_results, color=class_colors)
-        await message.channel.send(pick_results[1])
         plt.ylabel("使用数",font_properties=fontprop)
         plt.xticks(x,class_label,rotation=90,font_properties=fontprop)
         plt.subplots_adjust(left=0.1, right=0.95, bottom=0.1, top=0.95)
@@ -201,7 +211,7 @@ async def on_message(message):
             plt.text(x, y, y, ha='center', va='bottom')
         fig3.savefig("class_bar_"+compe_num+".png")
         analysed_data = [discord.File("class_bar_" + compe_num + ".png"),]
-        
+        await message.channel.send(compe_info)
         await message.channel.send(files=analysed_data)
 
     elif "sv.j-cg.com" in message.content:
