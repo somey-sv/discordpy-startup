@@ -336,7 +336,7 @@ async def on_message(message):
         
     
     elif "おめでとう！！" in message.content:
-        await message.channel.send(file=discord.File("omedetou.jpg"))
+        await message.channel.send(file=discord.File("おめでとうイマイ.jpg"))
             
     elif "あそぶ" in message.content:
         await message.channel.send(file=discord.File("asobu.jpg"))
