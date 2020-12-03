@@ -362,7 +362,7 @@ async def on_message(message):
     elif "ミスター・ポポ" in message.content:
         await message.channel.send(file=discord.File("popo.jpg"))
         
-    elif message.content == "乳":
+    elif "乳" in message.content:
         await message.channel.send(file=discord.File("titi.jpg"))
 
 
