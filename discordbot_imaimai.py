@@ -363,7 +363,7 @@ async def on_message(message):
         await message.channel.send(file=discord.File("popo.jpg"))
         
     elif "乳" in message.content:
-        await message.channel.send(file=discord.File("titi.jpg"))
+        await message.channel.send(file=discord.File("chichi.png"))
 
 
 # Botの起動とDiscordサーバーへの接続
