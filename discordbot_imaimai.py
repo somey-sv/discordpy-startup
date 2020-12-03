@@ -364,6 +364,10 @@ async def on_message(message):
         
     elif client.user.id in message.content:
         await message.channel.send('Hi.')
+        
+    elif "乳" in message.content:
+        await message.channel.send(file=discord.File("titi.jpg"))
+
 
 # Botの起動とDiscordサーバーへの接続
 client.run(TOKEN)
