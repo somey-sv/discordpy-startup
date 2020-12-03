@@ -365,7 +365,7 @@ async def on_message(message):
     elif client.user.id in message.content:
         await message.channel.send('Hi.')
         
-    elif "乳" in message.content:
+    elif message.content == "乳":
         await message.channel.send(file=discord.File("titi.jpg"))
 
 
