@@ -497,7 +497,7 @@ async def on_message(message):
     elif "ミスティング・ポポ" in message.content:
         await message.channel.send(file=discord.File("mysting_popo.png"))
 
-    elif '9613' in message.content:
+    elif message.isMemberMentioned(client.user):
         generator = GenerateText(random.randint(1,3))
         markovstring = generator.generate()
         await message.channel.send(markovstring)
