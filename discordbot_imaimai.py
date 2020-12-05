@@ -502,6 +502,9 @@ async def on_message(message):
         markovstring = generator.generate()
         await message.channel.send(markovstring)
 
+    elif "イマイ" in message.content:
+        await message.channel.send("Hi.")
+        
     elif message.content == "リスト":
         await message.channel.send(arche_list)
 
