@@ -36,7 +36,7 @@ class GenerateText(object):
         """
 
         # DBオープン
-        con = sqlite3.connect("chain.db")
+        con = sqlite3.connect("chain4.db")
         con.row_factory = sqlite3.Row
 
         # 最終的にできる文章
@@ -64,13 +64,15 @@ class GenerateText(object):
         first_triplet = self._get_first_triplet(con)
         morphemes.append(first_triplet[1])
         morphemes.append(first_triplet[2])
+        morphemes.append(first_triplet[3])
 
         # 文章を紡いでいく
         while morphemes[-1] != "__END_SENTENCE__":
-            prefix1 = morphemes[-2]
-            prefix2 = morphemes[-1]
-            triplet = self._get_triplet(con, prefix1, prefix2)
-            morphemes.append(triplet[2])
+            prefix1 = morphemes[-3]
+            prefix2 = morphemes[-2]
+            prefix3 = morphemes[-1]
+            triplet = self._get_triplet(con, prefix1, prefix2, prefix3)
+            morphemes.append(triplet[3])
 
         # 連結
         result = "".join(morphemes[:-1])
@@ -85,11 +87,13 @@ class GenerateText(object):
         @return チェーンの情報の配列
         """
         # ベースとなるSQL
-        sql = "select prefix1, prefix2, suffix, freq from chain_freqs where prefix1 = ?"
+        sql = "select prefix1, prefix2, prefix3, suffix, freq from chain_freqs where prefix1 = ?"
 
         # prefixが2つなら条件に加える
-        if len(prefixes) == 2:
+        if len(prefixes) == 3:
             sql += " and prefix2 = ?"
+            sql += " and prefix3 = ?"
+
 
         # 結果
         result = []
@@ -116,9 +120,9 @@ class GenerateText(object):
         # 取得したチェーンから、確率的に1つ選ぶ
         triplet = self._get_probable_triplet(chains)
 
-        return (triplet["prefix1"], triplet["prefix2"], triplet["suffix"])
+        return (triplet["prefix1"], triplet["prefix2"], triplet["prefix3"], triplet["suffix"])
 
-    def _get_triplet(self, con, prefix1, prefix2):
+    def _get_triplet(self, con, prefix1, prefix2, prefix3):
         """
         prefix1とprefix2からsuffixをランダムに取得する
         @param con DBコネクション
@@ -127,7 +131,7 @@ class GenerateText(object):
         @return 3つ組のタプル
         """
         # BEGINをprefix1としてチェーンを取得
-        prefixes = (prefix1, prefix2)
+        prefixes = (prefix1, prefix2, prefix3)
 
         # チェーン情報を取得
         chains = self._get_chain_from_DB(con, prefixes)
@@ -135,7 +139,7 @@ class GenerateText(object):
         # 取得したチェーンから、確率的に1つ選ぶ
         triplet = self._get_probable_triplet(chains)
 
-        return (triplet["prefix1"], triplet["prefix2"], triplet["suffix"])
+        return (triplet["prefix1"], triplet["prefix2"], triplet["prefix3"], triplet["suffix"])
 
     def _get_probable_triplet(self, chains):
         """
@@ -152,10 +156,9 @@ class GenerateText(object):
                 probability.append(index)
 
         # ランダムに1つを選ぶ
-        chain_index = random.choice(probability)
+        chain_index =  random.choice(probability)
 
         return chains[chain_index]
-
 
 
 #どばすぽのヘッダー部分
@@ -498,8 +501,10 @@ async def on_message(message):
         await message.channel.send(file=discord.File("mysting_popo.png"))
 
     elif client.user in message.mentions:
-        generator = GenerateText(random.randint(1,3))
+        generator = GenerateText(1)
         markovstring = generator.generate()
+        if (random.random() > 0.5):
+            markovstring+= "w"
         await message.channel.send(markovstring)
 
     elif "イマイ" in message.content:
