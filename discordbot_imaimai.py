@@ -401,7 +401,7 @@ async def on_message(message):
             if j_txt["participants"][i]["te"] == 0:
                 continue
             elif j_txt["participants"][i]["te"] == 1:
-                for j in range(2):
+                for j in range(len(j_txt["participants"][i]["dk"])):
                     class_ij = j_txt["participants"][i]["dk"][j]["cl"]
                     deck_ij = j_txt["participants"][i]["dk"][j]["hs"]
                     archetype = deck_arche_analysis(deck_ij, class_ij)
